@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GST Registration Eligibility Checker | GSTGate</title>
+<meta name="description" content="Check whether your business needs GST registration in India based on turnover, state and business activity. Free instant eligibility checker for freelancers, traders and small businesses." />
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Google AdSense (replace with your own client ID) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --bg:#0a0d12;
+    --bg-soft:#10141b;
+    --card:#141922;
+    --card-2:#1a212c;
+    --border:rgba(255,255,255,0.08);
+    --border-soft:rgba(255,255,255,0.05);
+    --text:#eef1f5;
+    --muted:#8d96a3;
+    --gold:#e3b341;
+    --gold-soft:rgba(227,179,65,0.12);
+    --green:#4ade80;
+    --green-soft:rgba(74,222,128,0.12);
+    --red:#f87171;
+    --red-soft:rgba(248,113,113,0.12);
+    --amber:#fbbf24;
+    --amber-soft:rgba(251,191,36,0.12);
+    --radius:14px;
+    --radius-lg:22px;
+    --shadow:0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    font-family:'DM Sans', sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(227,179,65,0.07), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(74,222,128,0.06), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
+
+  /* ===== Header ===== */
+  header{
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 0; flex-wrap:wrap; gap:14px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{
+    width:42px; height:42px; border-radius:10px;
+    background:linear-gradient(135deg, var(--gold), #b8862f);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne', sans-serif; font-weight:800; color:#181206;
+    font-size:18px; flex-shrink:0;
+    box-shadow:0 8px 24px -8px rgba(227,179,65,0.5);
+  }
+  .brand-text h1{
+    font-family:'Syne', sans-serif; font-size:18px; font-weight:700; letter-spacing:0.3px;
+  }
+  .brand-text span{ font-size:12px; color:var(--muted); }
+  .badge-india{
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:1px;
+    color:var(--gold); border:1px solid rgba(227,179,65,0.35);
+    padding:6px 12px; border-radius:999px; background:var(--gold-soft);
+    text-transform:uppercase;
+  }
+
+  /* ===== Hero ===== */
+  .hero{ padding:48px 0 28px; text-align:center; }
+  .hero-eyebrow{
+    font-family:'DM Mono', monospace; font-size:12px; letter-spacing:3px;
+    color:var(--muted); text-transform:uppercase; margin-bottom:14px;
+  }
+  .hero h2{
+    font-family:'Syne', sans-serif; font-weight:800; font-size:clamp(28px, 5vw, 46px);
+    line-height:1.15; max-width:760px; margin:0 auto 14px;
+  }
+  .hero h2 .hl{ color:var(--gold); }
+  .hero p{ color:var(--muted); max-width:560px; margin:0 auto; font-size:15px; }
+
+  /* ===== Ad slot ===== */
+  .ad-slot{
+    margin:28px auto; max-width:1080px; padding:14px;
+    border:1px dashed var(--border); border-radius:var(--radius);
+    text-align:center; color:var(--muted); font-size:11px;
+    letter-spacing:2px; text-transform:uppercase; font-family:'DM Mono', monospace;
+    background:var(--bg-soft);
+  }
+  .ad-slot .adsbygoogle{ display:block; min-height:60px; }
+
+  /* ===== Layout grid ===== */
+  .main-grid{
+    display:grid; grid-template-columns:1.15fr 1fr; gap:24px;
+    align-items:start; margin:10px 0 40px;
+  }
+  @media (max-width:880px){
+    .main-grid{ grid-template-columns:1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .card-head{
+    padding:22px 24px; border-bottom:1px solid var(--border-soft);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .card-head h3{ font-family:'Syne', sans-serif; font-size:17px; font-weight:700; }
+  .card-head .step{
+    font-family:'DM Mono', monospace; font-size:11px; color:var(--muted);
+    border:1px solid var(--border); padding:4px 10px; border-radius:999px;
+  }
+  .card-body{ padding:24px; }
+
+  /* ===== Form ===== */
+  .field{ margin-bottom:18px; }
+  .field label{
+    display:block; font-size:13px; font-weight:500; margin-bottom:8px; color:var(--text);
+  }
+  .field .hint{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+  .field select,
+  .field input[type="number"]{
+    width:100%; padding:13px 14px; border-radius:10px;
+    border:1px solid var(--border); background:var(--card-2);
+    color:var(--text); font-family:'DM Sans', sans-serif; font-size:14px;
+    outline:none; transition:border-color .15s, box-shadow .15s;
+    appearance:none;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238d96a3' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:38px;
+  }
+  .field select:focus,
+  .field input[type="number"]:focus{
+    border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft);
+  }
+
+  .turnover-wrap{ position:relative; }
+  .turnover-wrap .currency{
+    position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    color:var(--muted); font-family:'DM Mono', monospace; font-size:14px;
+    pointer-events:none;
+  }
+  .turnover-wrap input{ padding-left:32px; }
+
+  fieldset{ border:none; padding:0; margin:0; }
+  legend{
+    font-size:13px; font-weight:500; margin-bottom:10px; padding:0;
+    display:flex; align-items:center; gap:8px;
+  }
+  legend .legend-note{ font-size:11px; color:var(--muted); font-weight:400; }
+
+  .check-list{ display:flex; flex-direction:column; gap:10px; }
+  .check-item{
+    display:flex; align-items:flex-start; gap:12px; padding:12px 14px;
+    border:1px solid var(--border); border-radius:10px; background:var(--card-2);
+    cursor:pointer; transition:border-color .15s, background .15s;
+  }
+  .check-item:hover{ border-color:rgba(227,179,65,0.35); }
+  .check-item input[type="checkbox"]{
+    margin-top:3px; width:16px; height:16px; accent-color:var(--gold); cursor:pointer; flex-shrink:0;
+  }
+  .check-item .ci-text{ font-size:13px; }
+  .check-item .ci-text b{ display:block; font-weight:500; color:var(--text); margin-bottom:2px; }
+  .check-item .ci-text small{ color:var(--muted); font-size:12px; }
+
+  .btn{
+    width:100%; padding:15px 20px; border-radius:12px; border:none; cursor:pointer;
+    font-family:'Syne', sans-serif; font-weight:700; font-size:15px; letter-spacing:0.3px;
+    background:linear-gradient(135deg, var(--gold), #c79730); color:#181206;
+    transition:transform .12s, box-shadow .12s; margin-top:6px;
+    box-shadow:0 12px 30px -12px rgba(227,179,65,0.55);
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:active{ transform:translateY(0px); }
+  .btn-secondary{
+    background:transparent; color:var(--muted); border:1px solid var(--border);
+    box-shadow:none; font-family:'DM Sans', sans-serif; font-weight:500; font-size:13px;
+    padding:10px 16px; width:auto; margin-top:12px;
+  }
+  .btn-secondary:hover{ color:var(--text); border-color:rgba(255,255,255,0.2); }
+
+  /* ===== Result panel ===== */
+  .result-panel .card-body{ display:flex; flex-direction:column; gap:20px; }
+
+  .seal-zone{
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    padding:28px 16px; border-radius:var(--radius); border:1px solid var(--border);
+    background:radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03), transparent 60%);
+    text-align:center;
+  }
+  .seal{
+    width:140px; height:140px; border-radius:50%;
+    border:3px solid var(--border); display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:4px; transform:rotate(-8deg) scale(0.9); opacity:0.4;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s, border-color .4s;
+    position:relative;
+  }
+  .seal::before{
+    content:''; position:absolute; inset:8px; border-radius:50%;
+    border:1px dashed currentColor; opacity:0.4;
+  }
+  .seal.active{ opacity:1; transform:rotate(-6deg) scale(1); }
+  .seal .seal-icon{ font-size:30px; line-height:1; }
+  .seal .seal-label{
+    font-family:'Syne', sans-serif; font-weight:800; font-size:13px;
+    letter-spacing:1.5px; text-transform:uppercase; line-height:1.3; padding:0 10px;
+  }
+  .seal.required{ border-color:var(--red); color:var(--red); }
+  .seal.notrequired{ border-color:var(--green); color:var(--green); }
+  .seal.voluntary{ border-color:var(--amber); color:var(--amber); }
+  .seal.idle{ border-color:var(--border); color:var(--muted); }
+
+  .seal-zone .seal-sub{ font-size:13px; color:var(--muted); max-width:320px; }
+  .seal-zone .seal-sub b{ color:var(--text); }
+
+  .result-details{ display:flex; flex-direction:column; gap:14px; }
+  .detail-row{
+    display:flex; justify-content:space-between; gap:12px;
+    padding:12px 14px; border:1px solid var(--border-soft); border-radius:10px;
+    background:var(--card-2); font-size:13px;
+  }
+  .detail-row .d-label{ color:var(--muted); }
+  .detail-row .d-value{ font-family:'DM Mono', monospace; font-weight:500; text-align:right; }
+
+  .reason-box{
+    border:1px solid var(--border-soft); border-radius:10px; padding:14px 16px;
+    background:var(--card-2);
+  }
+  .reason-box h4{
+    font-family:'Syne', sans-serif; font-size:13px; margin-bottom:8px; font-weight:700;
+  }
+  .reason-box ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .reason-box li{
+    font-size:13px; color:var(--muted); padding-left:18px; position:relative;
+  }
+  .reason-box li::before{
+    content:'›'; position:absolute; left:0; color:var(--gold); font-weight:700;
+  }
+
+  .empty-state{
+    text-align:center; color:var(--muted); font-size:13px; padding:10px 6px;
+  }
+
+  /* ===== Guide / accordion ===== */
+  .guide{ margin:36px 0; }
+  .guide-head{ text-align:center; margin-bottom:22px; }
+  .guide-head .hero-eyebrow{ margin-bottom:8px; }
+  .guide-head h3{ font-family:'Syne', sans-serif; font-weight:800; font-size:26px; }
+
+  .acc{
+    border:1px solid var(--border); border-radius:var(--radius); background:var(--card);
+    margin-bottom:10px; overflow:hidden;
+  }
+  .acc-head{
+    width:100%; background:none; border:none; color:var(--text); text-align:left;
+    padding:18px 20px; font-family:'Syne', sans-serif; font-weight:700; font-size:14px;
+    cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .acc-head .icon{ color:var(--gold); transition:transform .25s; font-size:18px; }
+  .acc.open .acc-head .icon{ transform:rotate(45deg); }
+  .acc-panel{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .acc-panel-inner{ padding:0 20px 20px; color:var(--muted); font-size:13.5px; }
+  .acc-panel-inner p{ margin-bottom:10px; }
+  .acc-panel-inner b{ color:var(--text); }
+  .acc-panel-inner table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:12.5px; }
+  .acc-panel-inner th, .acc-panel-inner td{
+    border:1px solid var(--border-soft); padding:8px 10px; text-align:left;
+  }
+  .acc-panel-inner th{ color:var(--text); font-family:'DM Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+
+  /* ===== Disclaimer ===== */
+  .disclaimer{
+    border:1px solid var(--border); border-radius:var(--radius); background:var(--card);
+    padding:18px 20px; font-size:12.5px; color:var(--muted); margin:30px 0;
+  }
+  .disclaimer b{ color:var(--gold); }
+
+  /* ===== Footer ===== */
+  footer{
+    border-top:1px solid var(--border); padding:26px 0 36px; text-align:center;
+    color:var(--muted); font-size:12.5px;
+  }
+  footer .made{ font-family:'DM Mono', monospace; font-size:11px; margin-top:6px; letter-spacing:1px; }
+
+  @media (max-width:520px){
+    .header-inner{ justify-content:center; text-align:center; }
+    .card-body{ padding:18px; }
+    .card-head{ padding:18px; }
+    .seal{ width:120px; height:120px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="brand">
+      <div class="brand-mark">GST</div>
+      <div class="brand-text">
+        <h1>GSTGate</h1>
+        <span>Registration Eligibility Checker</span>
+      </div>
+    </div>
+    <div class="badge-india">India · FY 2025-26</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-eyebrow">Free Tool · No Login Required</div>
+    <h2>Do you need <span class="hl">GST Registration?</span></h2>
+    <p>Enter your turnover, state and a few details about your business to instantly check whether GST registration is mandatory, voluntary, or not required for you.</p>
+  </section>
+
+  <!-- AdSense - Top Banner -->
+  <div class="ad-slot">
+    Advertisement
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+      data-ad-slot="1111111111"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ===== FORM CARD ===== -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Business Details</h3>
+        <span class="step">Step 1 of 1</span>
+      </div>
+      <div class="card-body">
+        <form id="gstForm">
+
+          <div class="field">
+            <label for="state">State / Union Territory of Business</label>
+            <select id="state" required>
+              <option value="">Select your state</option>
+              <optgroup label="Special Category States (lower threshold)">
+                <option value="special">Arunachal Pradesh</option>
+                <option value="special">Manipur</option>
+                <option value="special">Meghalaya</option>
+                <option value="special">Mizoram</option>
+                <option value="special">Nagaland</option>
+                <option value="special">Sikkim</option>
+                <option value="special">Tripura</option>
+                <option value="special">Uttarakhand</option>
+              </optgroup>
+              <optgroup label="Normal Category States / UTs">
+                <option value="normal">Andhra Pradesh</option>
+                <option value="normal">Assam</option>
+                <option value="normal">Bihar</option>
+                <option value="normal">Chhattisgarh</option>
+                <option value="normal">Goa</option>
+                <option value="normal">Gujarat</option>
+                <option value="normal">Haryana</option>
+                <option value="normal">Himachal Pradesh</option>
+                <option value="normal">Jharkhand</option>
+                <option value="normal">Karnataka</option>
+                <option value="normal">Kerala</option>
+                <option value="normal">Madhya Pradesh</option>
+                <option value="normal">Maharashtra</option>
+                <option value="normal">Odisha</option>
+                <option value="normal">Punjab</option>
+                <option value="normal">Rajasthan</option>
+                <option value="normal">Tamil Nadu</option>
+                <option value="normal">Telangana</option>
+                <option value="normal">Uttar Pradesh</option>
+                <option value="normal">West Bengal</option>
+                <option value="normal">Delhi (NCT)</option>
+                <option value="normal">Jammu &amp; Kashmir</option>
+                <option value="normal">Puducherry</option>
+                <option value="normal">Chandigarh</option>
+                <option value="normal">Other UT</option>
+              </optgroup>
+            </select>
+            <div class="hint">This decides whether the lower (special category) threshold applies to your business.</div>
+          </div>
+
+          <div class="field">
+            <label for="supplyType">What do you primarily supply?</label>
+            <select id="supplyType" required>
+              <option value="">Select supply type</option>
+              <option value="goods">Goods only</option>
+              <option value="services">Services only</option>
+              <option value="both">Both goods and services</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="turnover">Aggregate Annual Turnover (current FY, all-India, PAN-wise)</label>
+            <div class="turnover-wrap">
+              <span class="currency">₹</span>
+              <input type="number" id="turnover" min="0" step="1000" placeholder="e.g. 2500000" required />
+            </div>
+            <div class="hint">Aggregate turnover = total value of all taxable, exempt &amp; export supplies under the same PAN, India-wide — before deducting GST.</div>
+          </div>
+
+          <div class="field">
+            <fieldset>
+              <legend>Any of these apply to you? <span class="legend-note">(check all that are true)</span></legend>
+              <div class="check-list">
+
+                <label class="check-item">
+                  <input type="checkbox" id="interstate" />
+                  <span class="ci-text">
+                    <b>Inter-state supply</b>
+                    <small>You supply goods/services to customers in other states/UTs</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="ecomSeller" />
+                  <span class="ci-text">
+                    <b>Sell via e-commerce operator (goods)</b>
+                    <small>e.g. Amazon, Flipkart, Meesho — selling physical goods</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="ecomOperator" />
+                  <span class="ci-text">
+                    <b>You are an e-commerce operator</b>
+                    <small>You run a platform and collect TCS on behalf of sellers</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="casual" />
+                  <span class="ci-text">
+                    <b>Casual or Non-Resident Taxable Person</b>
+                    <small>Occasional supplier without a fixed place of business, e.g. exhibitions/events</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="rcm" />
+                  <span class="ci-text">
+                    <b>Liable to pay tax under Reverse Charge (RCM)</b>
+                    <small>You must pay GST as recipient on certain notified supplies</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="agentIsd" />
+                  <span class="ci-text">
+                    <b>Acting as an agent / Input Service Distributor / TDS-TCS deductor</b>
+                    <small>You supply on behalf of others, distribute ITC, or deduct TDS under GST</small>
+                  </span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" id="voluntary" />
+                  <span class="ci-text">
+                    <b>I want to register voluntarily</b>
+                    <small>To claim ITC, issue tax invoices, or appear on B2B portals even if not mandatory</small>
+                  </span>
+                </label>
+
+              </div>
+            </fieldset>
+          </div>
+
+          <button type="submit" class="btn">Check My Eligibility</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset form</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== RESULT CARD ===== -->
+    <div class="card result-panel">
+      <div class="card-head">
+        <h3>Eligibility Result</h3>
+        <span class="step" id="resultStep">Awaiting input</span>
+      </div>
+      <div class="card-body">
+
+        <div class="seal-zone">
+          <div class="seal idle" id="seal">
+            <div class="seal-icon" id="sealIcon">⏳</div>
+            <div class="seal-label" id="sealLabel">Fill the form to<br>see your result</div>
+          </div>
+          <div class="seal-sub" id="sealSub">Your eligibility verdict will appear here as a quick visual seal — green for not required, amber for voluntary, red for mandatory.</div>
+        </div>
+
+        <div id="resultDetails" style="display:none;">
+          <div class="result-details">
+            <div class="detail-row">
+              <span class="d-label">Your turnover</span>
+              <span class="d-value" id="rTurnover">—</span>
+            </div>
+            <div class="detail-row">
+              <span class="d-label">Applicable threshold</span>
+              <span class="d-value" id="rThreshold">—</span>
+            </div>
+            <div class="detail-row">
+              <span class="d-label">State category</span>
+              <span class="d-value" id="rStateCat">—</span>
+            </div>
+          </div>
+
+          <div class="reason-box" style="margin-top:14px;">
+            <h4>Why this result?</h4>
+            <ul id="rReasons"></ul>
+          </div>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          No result yet. Complete the form and click "Check My Eligibility".
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AdSense - In-content -->
+  <div class="ad-slot">
+    Advertisement
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+      data-ad-slot="2222222222"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <!-- ===== GUIDE / FAQ ===== -->
+  <section class="guide">
+    <div class="guide-head">
+      <div class="hero-eyebrow">समझिए आसान भाषा में</div>
+      <h3>GST रजिस्ट्रेशन गाइड (Hindi)</h3>
+    </div>
+
+    <div class="acc open">
+      <button class="acc-head" type="button">
+        <span>GST रजिस्ट्रेशन की टर्नओवर लिमिट क्या है?</span>
+        <span class="icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel-inner">
+          <p>GST रजिस्ट्रेशन की जरूरत आपके <b>aggregate annual turnover</b> (एक ही PAN पर पूरे भारत का कुल टर्नओवर) पर निर्भर करती है।</p>
+          <table>
+            <tr><th>राज्य की श्रेणी</th><th>सिर्फ गुड्स</th><th>सर्विसेज / दोनों</th></tr>
+            <tr><td>Normal Category States</td><td>₹40 लाख</td><td>₹20 लाख</td></tr>
+            <tr><td>Special Category States</td><td>₹20 लाख</td><td>₹10 लाख</td></tr>
+          </table>
+          <p>अगर आपका टर्नओवर इस लिमिट से ऊपर चला जाता है, तो GST रजिस्ट्रेशन <b>मैंडेटरी (compulsory)</b> हो जाता है।</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc">
+      <button class="acc-head" type="button">
+        <span>कब टर्नओवर लिमिट से नीचे होने पर भी रजिस्ट्रेशन जरूरी है?</span>
+        <span class="icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel-inner">
+          <p>कुछ केस में टर्नओवर चाहे जो भी हो, GST रजिस्ट्रेशन लेना ही पड़ता है:</p>
+          <p>• <b>इंटर-स्टेट सप्लाई</b> करने वाले सप्लायर (कुछ छोटे सर्विस प्रोवाइडर्स के लिए notification के तहत छूट हो सकती है — CA से कन्फर्म करें)</p>
+          <p>• <b>E-commerce platforms</b> (Amazon, Flipkart, Meesho आदि) के through goods बेचने वाले सेलर्स</p>
+          <p>• E-commerce ऑपरेटर्स जो TCS कलेक्ट करते हैं</p>
+          <p>• Casual Taxable Person या Non-Resident Taxable Person</p>
+          <p>• Reverse Charge Mechanism (RCM) के तहत टैक्स देने वाले</p>
+          <p>• Input Service Distributor (ISD), एजेंट, और TDS/TCS deductor</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc">
+      <button class="acc-head" type="button">
+        <span>Voluntary Registration क्या है और क्यों लें?</span>
+        <span class="icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel-inner">
+          <p>अगर आपका टर्नओवर थ्रेशोल्ड से कम है और कोई mandatory condition भी apply नहीं होती, फिर भी आप <b>voluntarily GST registration</b> ले सकते हैं।</p>
+          <p>फायदे: Input Tax Credit (ITC) क्लेम करना, GST invoice issue करना, बड़े B2B क्लाइंट्स या B2B मार्केटप्लेस के साथ काम करना, और बिज़नेस की क्रेडिबिलिटी बढ़ाना।</p>
+          <p>नुकसान: रेगुलर GST returns फाइल करने का compliance बर्डन भी साथ आता है।</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc">
+      <button class="acc-head" type="button">
+        <span>Aggregate Turnover में क्या-क्या शामिल होता है?</span>
+        <span class="icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel-inner">
+          <p>Aggregate turnover में शामिल है: सभी taxable supplies, exempt supplies, exports, और inter-state supplies — same PAN के सभी branches/states मिलाकर, GST निकालने से पहले की वैल्यू।</p>
+          <p>इसमें शामिल <b>नहीं</b> है: inward supplies पर reverse charge में चुकाया गया टैक्स, और CGST/SGST/IGST/Cess की वैल्यू।</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc">
+      <button class="acc-head" type="button">
+        <span>रजिस्ट्रेशन कैसे करें?</span>
+        <span class="icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel-inner">
+          <p>GST रजिस्ट्रेशन के लिए <b>www.gst.gov.in</b> पर जाकर Form GST REG-01 भरें। ज़रूरी डॉक्युमेंट्स: PAN, Aadhaar, बिज़नेस प्रूफ (शॉप एक्ट / इलेक्ट्रिसिटी बिल / रेंट एग्रीमेंट), बैंक डिटेल्स और फोटो। ARN जनरेट होने के बाद वेरिफिकेशन में आम तौर पर 7 वर्किंग डेज़ लगते हैं।</p>
+          <p>सही HSN/SAC कोड, फाइलिंग फ्रीक्वेंसी (मंथली/QRMP) और कंपोजीशन स्कीम जैसी बातों के लिए अपने CA से सलाह लें।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <b>Disclaimer:</b> This tool is for general guidance only and is based on standard GST threshold rules under the CGST Act. Thresholds, notifications and special category state lists can change and may have exceptions (e.g. certain inter-state service suppliers below threshold). Always confirm your registration requirement with a qualified Chartered Accountant or GST practitioner, or check the official GST portal (gst.gov.in), before taking any action.
+  </div>
+
+  <!-- AdSense - Bottom -->
+  <div class="ad-slot">
+    Advertisement
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+      data-ad-slot="3333333333"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    GSTGate — GST Registration Eligibility Checker · For informational use only, not professional tax advice.
+    <div class="made">Built for Indian freelancers, traders &amp; small businesses</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---------- Accordion ----------
+  document.querySelectorAll('.acc-head').forEach(function(btn){
+    var acc = btn.closest('.acc');
+    var panel = acc.querySelector('.acc-panel');
+    if(acc.classList.contains('open')){
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    }
+    btn.addEventListener('click', function(){
+      var isOpen = acc.classList.contains('open');
+      // close all
+      document.querySelectorAll('.acc').forEach(function(a){
+        a.classList.remove('open');
+        a.querySelector('.acc-panel').style.maxHeight = null;
+      });
+      if(!isOpen){
+        acc.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // ---------- Eligibility logic ----------
+  var form = document.getElementById('gstForm');
+  var seal = document.getElementById('seal');
+  var sealIcon = document.getElementById('sealIcon');
+  var sealLabel = document.getElementById('sealLabel');
+  var sealSub = document.getElementById('sealSub');
+  var resultDetails = document.getElementById('resultDetails');
+  var emptyState = document.getElementById('emptyState');
+  var resultStep = document.getElementById('resultStep');
+  var rTurnover = document.getElementById('rTurnover');
+  var rThreshold = document.getElementById('rThreshold');
+  var rStateCat = document.getElementById('rStateCat');
+  var rReasons = document.getElementById('rReasons');
+
+  var fmt = new Intl.NumberFormat('en-IN');
+
+  function setSeal(type, icon, label, sub){
+    seal.className = 'seal active ' + type;
+    sealIcon.textContent = icon;
+    sealLabel.innerHTML = label;
+    sealSub.innerHTML = sub;
+  }
+
+  function addReason(text){
+    var li = document.createElement('li');
+    li.innerHTML = text;
+    rReasons.appendChild(li);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var stateCat = document.getElementById('state').value;
+    var supplyType = document.getElementById('supplyType').value;
+    var turnover = parseFloat(document.getElementById('turnover').value);
+
+    if(!stateCat || !supplyType || isNaN(turnover) || turnover < 0){
+      alert('Please fill in state, supply type and a valid turnover amount.');
+      return;
+    }
+
+    var interstate = document.getElementById('interstate').checked;
+    var ecomSeller = document.getElementById('ecomSeller').checked;
+    var ecomOperator = document.getElementById('ecomOperator').checked;
+    var casual = document.getElementById('casual').checked;
+    var rcm = document.getElementById('rcm').checked;
+    var agentIsd = document.getElementById('agentIsd').checked;
+    var voluntary = document.getElementById('voluntary').checked;
+
+    // Determine threshold
+    var threshold;
+    if(stateCat === 'special'){
+      threshold = (supplyType === 'goods') ? 2000000 : 1000000;
+    } else {
+      threshold = (supplyType === 'goods') ? 4000000 : 2000000;
+    }
+
+    // Collect mandatory triggers (irrespective of turnover)
+    var mandatoryReasons = [];
+    if(interstate) mandatoryReasons.push('You make inter-state taxable supplies — GST registration is generally compulsory regardless of turnover (some small inter-state service suppliers may have a notified exemption; verify with your CA).');
+    if(ecomSeller) mandatoryReasons.push('You supply goods through an e-commerce operator — compulsory registration applies regardless of turnover.');
+    if(ecomOperator) mandatoryReasons.push('You operate an e-commerce platform liable to collect TCS — compulsory registration applies.');
+    if(casual) mandatoryReasons.push('Casual Taxable Person / Non-Resident Taxable Person status requires compulsory registration before making any supply.');
+    if(rcm) mandatoryReasons.push('You are liable to pay tax under Reverse Charge Mechanism — compulsory registration applies regardless of turnover.');
+    if(agentIsd) mandatoryReasons.push('Agents, Input Service Distributors and TDS/TCS deductors must register compulsorily, regardless of turnover.');
+
+    var aboveThreshold = turnover >= threshold;
+    if(aboveThreshold){
+      mandatoryReasons.push('Your aggregate turnover of ₹' + fmt.format(turnover) + ' has crossed the applicable threshold of ₹' + fmt.format(threshold) + '.');
+    }
+
+    rReasons.innerHTML = '';
+    resultDetails.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    rTurnover.textContent = '₹' + fmt.format(turnover);
+    rThreshold.textContent = '₹' + fmt.format(threshold) + (supplyType === 'goods' ? ' (Goods)' : (supplyType === 'services' ? ' (Services)' : ' (Goods + Services)'));
+    rStateCat.textContent = (stateCat === 'special') ? 'Special Category State' : 'Normal Category State';
+
+    if(mandatoryReasons.length > 0){
+      setSeal('required', '🔴', 'GST REGISTRATION<br>REQUIRED', 'GST registration is <b>mandatory</b> for your business based on the details provided.');
+      resultStep.textContent = 'Mandatory';
+      mandatoryReasons.forEach(addReason);
+    } else if(voluntary){
+      setSeal('voluntary', '🟡', 'VOLUNTARY<br>REGISTRATION', 'Not mandatory yet, but you can <b>opt in voluntarily</b> to claim ITC and issue GST invoices.');
+      resultStep.textContent = 'Voluntary';
+      addReason('Your turnover of ₹' + fmt.format(turnover) + ' is below the applicable threshold of ₹' + fmt.format(threshold) + ', and none of the compulsory-registration conditions apply.');
+      addReason('Since you opted for voluntary registration, you may register on the GST portal even though it is currently optional.');
+      addReason('Note: once registered, regular GST return filing and compliance obligations will apply.');
+    } else {
+      setSeal('notrequired', '🟢', 'NOT REQUIRED<br>RIGHT NOW', 'Based on your inputs, GST registration is <b>not mandatory</b> for your business at this time.');
+      resultStep.textContent = 'Not required';
+      addReason('Your turnover of ₹' + fmt.format(turnover) + ' is below the applicable threshold of ₹' + fmt.format(threshold) + '.');
+      addReason('None of the compulsory-registration conditions (inter-state supply, e-commerce, RCM, casual/NRTP, agent/ISD/TDS-TCS) apply based on your selections.');
+      addReason('Keep monitoring your turnover — registration becomes mandatory as soon as you cross the threshold or any condition above becomes applicable.');
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    form.reset();
+    resultDetails.style.display = 'none';
+    emptyState.style.display = 'block';
+    resultStep.textContent = 'Awaiting input';
+    seal.className = 'seal idle';
+    sealIcon.textContent = '⏳';
+    sealLabel.innerHTML = 'Fill the form to<br>see your result';
+    sealSub.innerHTML = 'Your eligibility verdict will appear here as a quick visual seal — green for not required, amber for voluntary, red for mandatory.';
+  });
+})();
+</script>
+
+</body>
+</html>
